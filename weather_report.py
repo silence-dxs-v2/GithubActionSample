@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 appID = os.environ.get("APP_ID","wxaf9c4ca6108f268a")
 appSecret = os.environ.get("APP_SECRET",'de6a98e40a4e67dfc6c66357cf3cdb45')
 # 收信人ID即 用户列表中的微信号
-openId = os.environ.get("OPEN_ID",['oiN-D6TnqBhpNWaMtbY6H9yDDe8M','oiN-D6Xp7iloKa2vcLG2RCe7JXSo',"oiN-D6eLefsEeHhL7Wl2GOv2hNu4"])
+openId = os.environ.get("OPEN_ID","oiN-D6TnqBhpNWaMtbY6H9yDDe8M,oiN-D6Xp7iloKa2vcLG2RCe7JXSo")
 # 天气预报模板ID
 weather_template_id = os.environ.get("TEMPLATE_ID",'cLd_3rF-Mwo46SlUVtlq3uIR3u30hN6dqH7QMKsGn98')
 
@@ -87,7 +87,8 @@ def send_weather(access_token, weather):
     import datetime
     today = datetime.date.today()
     today_str = today.strftime("%Y年%m月%d日")
-    for i in openId:
+    result_array = openId.split(',')
+    for i in result_array:
         body = {
             "touser": i.strip(),
             "template_id": weather_template_id.strip(),
