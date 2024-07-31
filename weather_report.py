@@ -5,12 +5,12 @@ import json
 from bs4 import BeautifulSoup
 
 # 从测试号信息获取
-appID = os.environ.get("APP_ID")
-appSecret = os.environ.get("APP_SECRET")
+appID = os.environ.get("APP_ID","wxaf9c4ca6108f268a")
+appSecret = os.environ.get("APP_SECRET",'de6a98e40a4e67dfc6c66357cf3cdb45')
 # 收信人ID即 用户列表中的微信号
-openId = os.environ.get("OPEN_ID")
+openId = os.environ.get("OPEN_ID",['oiN-D6TnqBhpNWaMtbY6H9yDDe8M','oiN-D6Xp7iloKa2vcLG2RCe7JXSo',"oiN-D6eLefsEeHhL7Wl2GOv2hNu4"])
 # 天气预报模板ID
-weather_template_id = os.environ.get("TEMPLATE_ID")
+weather_template_id = os.environ.get("TEMPLATE_ID",'cLd_3rF-Mwo46SlUVtlq3uIR3u30hN6dqH7QMKsGn98')
 
 def get_weather(my_city):
     urls = ["http://www.weather.com.cn/textFC/hb.shtml",
@@ -87,34 +87,36 @@ def send_weather(access_token, weather):
     import datetime
     today = datetime.date.today()
     today_str = today.strftime("%Y年%m月%d日")
-
-    body = {
-        "touser": openId.strip(),
-        "template_id": weather_template_id.strip(),
-        "url": "https://weixin.qq.com",
-        "data": {
-            "date": {
-                "value": today_str
-            },
-            "region": {
-                "value": weather[0]
-            },
-            "weather": {
-                "value": weather[2]
-            },
-            "temp": {
-                "value": weather[1]
-            },
-            "wind_dir": {
-                "value": weather[3]
-            },
-            "today_note": {
-                "value": get_daily_love()
+    for i in openId:
+        body = {
+            "touser": i.strip(),
+            "template_id": weather_template_id.strip(),
+            "url": "https://weixin.qq.com",
+            "data": {
+                "date": {
+                    "value": today_str
+                },
+                "region": {
+                    "value": weather[0]
+                },
+                "weather": {
+                    "value": weather[2]
+                },
+                "temp": {
+                    "value": weather[1]
+                },
+                "wind_dir": {
+                    "value": weather[3]
+                },
+                "today_note": {
+                    "value": get_daily_love()
+                }
             }
         }
-    }
-    url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}'.format(access_token)
-    print(requests.post(url, json.dumps(body)).text)
+        url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}'.format(access_token)
+        print(requests.post(url, json.dumps(body)).text)
+
+
 
 
 
